@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Меню Магии</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #1c1c1e);
+            --text-color: var(--tg-theme-text-color, #ffffff);
+            --card-bg: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            --hint-color: var(--tg-theme-hint-color, #8e8e93);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            /* ВАЖНО: Добавляем отступ снизу, чтобы кнопка не прилипала к краю */
+            padding: 10px;
+            padding-bottom: 80px; 
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Убираем синюю подсветку на Android */
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card.full-width {
+            grid-column: span 2;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            color: #000;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            /* Плавная анимация нажатия */
+            transition: transform 0.15s ease-in-out, opacity 0.15s;
+        }
+
+        /* Эффект нажатия: карточка уменьшается и становится чуть прозрачнее */
+        .card:active {
+            transform: scale(0.96);
+            opacity: 0.8;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            background-color: #3a3a3c; /* Заглушка, пока нет картинки */
+        }
+
+        .card.full-width .card-image {
+            height: 140px;
+        }
+
+        .card-content {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: var(--hint-color);
+            line-height: 1.3;
+        }
+
+        .card.full-width .card-desc {
+            color: #444;
+        }
+
+        h2 {
+            margin: 10px 0 15px 5px;
+            font-size: 20px;
+        }
+
+        /* Кнопка записи */
+        .footer-link {
+            display: block;
+            text-align: center;
+            padding: 16px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            color: var(--text-color);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        
+        .footer-link:active {
+             transform: scale(0.96);
+             background: #3a3a3c;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>✨ Магическое меню</h2>
+
+    <div class="container">
+        <!-- Подарок -->
+        <div class="card full-width" onclick="sendData('gift_start')">
+            <img src="gift.jpg" alt="Подарок" class="card-image" onerror="this.style.display='none'"> 
+            <div class="card-content">
+                <div class="card-title">🎁 ЗАБРАТЬ ПОДАРОК</div>
+                <div class="card-desc">Эксклюзивные формулы 2026</div>
+            </div>
+        </div>
+
+        <!-- Руна 2026 -->
+        <div class="card" onclick="sendData('rune_year_2026')">
+            <img src="rune_year.jpg" alt="2026" class="card-image" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-title">🐍 Руна 2026</div>
+                <div class="card-desc">Финансы на год</div>
+            </div>
+        </div>
+
+        <!-- Календарь -->
+        <div class="card" onclick="sendData('money_calendar')">
+            <img src="calendar.jpg" alt="Календарь" class="card-image" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-title">🌙 Календарь</div>
+                <div class="card-desc">Денежный план</div>
+            </div>
+        </div>
+
+        <!-- Месяц -->
+        <div class="card" onclick="sendData('rune_month')">
+            <img src="rune_month.jpg" alt="Месяц" class="card-image" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-title">📅 Руна Месяца</div>
+                <div class="card-desc">Энергия периода</div>
+            </div>
+        </div>
+
+        <!-- Неделя -->
+        <div class="card" onclick="sendData('rune_week')">
+            <img src="rune_week.jpg" alt="Неделя" class="card-image" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-title">🔮 Руна Недели</div>
+                <div class="card-desc">Прогноз на 7 дней</div>
+            </div>
+        </div>
+
+        <!-- Канал -->
+        <div class="card full-width" style="background: #2c2c2e; color: var(--text-color);" onclick="sendData('promo_channel')">
+            <img src="formulas.jpg" alt="Канал" class="card-image" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-title">🧬 Канал с формулами</div>
+                <div class="card-desc">Готовые решения</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка записи -->
+    <div class="footer-link" onclick="openLink('https://t.me/lera_luna')">
+        ✍️ Запись на консультацию
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Растянуть на весь экран
+
+        function sendData(data) {
+            // 1. Безопасная попытка вибрации (чтобы не ломалось на ПК)
+            try {
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
+            } catch (err) {
+                console.log("Вибрация не поддерживается, едем дальше");
+            }
+
+            // 2. Отправка данных
+            try {
+                // Эта команда отправляет данные боту И закрывает окно
+                tg.sendData(data); 
+            } catch (err) {
+                // Если вдруг произошла ошибка - покажем её
+                alert("Ошибка отправки данных: " + err);
+            }
+        }
+
+        function openLink(url) {
+            // Безопасное открытие ссылки
+            try {
+                tg.openLink(url);
+            } catch (err) {
+                // Если не сработало через WebApp, пробуем обычно
+                window.location.href = url;
+            }
+        }
+    </script>
+</body>
+</html>
+
