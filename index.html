@@ -18,19 +18,22 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
+            /* ВАЖНО: Добавляем отступ снизу, чтобы кнопка не прилипала к краю */
             padding: 10px;
+            padding-bottom: 80px; 
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
             box-sizing: border-box;
-            user-select: none; /* Убираем выделение текста */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Убираем синюю подсветку на Android */
         }
 
         .container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Две колонки */
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
         }
 
-        /* Карточка на всю ширину (для Подарка) */
         .card.full-width {
             grid-column: span 2;
             background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
@@ -43,23 +46,26 @@
             overflow: hidden;
             position: relative;
             cursor: pointer;
-            transition: transform 0.1s;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            /* Плавная анимация нажатия */
+            transition: transform 0.15s ease-in-out, opacity 0.15s;
         }
 
+        /* Эффект нажатия: карточка уменьшается и становится чуть прозрачнее */
         .card:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
+            opacity: 0.8;
         }
 
         .card-image {
             width: 100%;
-            height: 100px; /* Высота картинки */
+            height: 100px;
             object-fit: cover;
+            background-color: #3a3a3c; /* Заглушка, пока нет картинки */
         }
 
-        /* Увеличенная картинка для главной карточки */
         .card.full-width .card-image {
             height: 140px;
         }
@@ -80,7 +86,6 @@
             line-height: 1.3;
         }
 
-        /* Цвет текста описания для цветной карточки */
         .card.full-width .card-desc {
             color: #444;
         }
@@ -90,16 +95,24 @@
             font-size: 20px;
         }
 
-        /* Секция Контакты (внизу) */
+        /* Кнопка записи */
         .footer-link {
+            display: block;
             text-align: center;
-            margin-top: 20px;
-            padding: 15px;
+            padding: 16px;
             background: var(--card-bg);
             border-radius: 12px;
             color: var(--text-color);
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        
+        .footer-link:active {
+             transform: scale(0.96);
+             background: #3a3a3c;
         }
     </style>
 </head>
@@ -108,58 +121,57 @@
     <h2>✨ Магическое меню</h2>
 
     <div class="container">
-        <!-- БОЛЬШАЯ КНОПКА ПОДАРКА -->
+        <!-- Подарок -->
         <div class="card full-width" onclick="sendData('gift_start')">
-            <!-- Замените gift.jpg на название вашего файла -->
-            <img src="gift.jpg" alt="Gift" class="card-image"> 
+            <img src="gift.jpg" alt="Подарок" class="card-image" onerror="this.style.display='none'"> 
             <div class="card-content">
-                <div class="card-title">🎁 ЗАБРАТЬ ПОДАРОК 2026</div>
-                <div class="card-desc">Эксклюзивные рунические формулы на год</div>
+                <div class="card-title">🎁 ЗАБРАТЬ ПОДАРОК</div>
+                <div class="card-desc">Эксклюзивные формулы 2026</div>
             </div>
         </div>
 
         <!-- Руна 2026 -->
         <div class="card" onclick="sendData('rune_year_2026')">
-            <img src="rune_year.jpg" alt="2026" class="card-image">
+            <img src="rune_year.jpg" alt="2026" class="card-image" onerror="this.style.display='none'">
             <div class="card-content">
                 <div class="card-title">🐍 Руна 2026</div>
-                <div class="card-desc">Финансовый прогноз на год</div>
+                <div class="card-desc">Финансы на год</div>
             </div>
         </div>
 
-        <!-- Денежный календарь -->
+        <!-- Календарь -->
         <div class="card" onclick="sendData('money_calendar')">
-            <img src="calendar.jpg" alt="Calendar" class="card-image">
+            <img src="calendar.jpg" alt="Календарь" class="card-image" onerror="this.style.display='none'">
             <div class="card-content">
                 <div class="card-title">🌙 Календарь</div>
-                <div class="card-desc">Денежный лунный календарь</div>
+                <div class="card-desc">Денежный план</div>
             </div>
         </div>
 
-        <!-- Руна Месяца -->
+        <!-- Месяц -->
         <div class="card" onclick="sendData('rune_month')">
-            <img src="rune_month.jpg" alt="Month" class="card-image">
+            <img src="rune_month.jpg" alt="Месяц" class="card-image" onerror="this.style.display='none'">
             <div class="card-content">
                 <div class="card-title">📅 Руна Месяца</div>
-                <div class="card-desc">Энергия текущего периода</div>
+                <div class="card-desc">Энергия периода</div>
             </div>
         </div>
 
-        <!-- Руна Недели -->
+        <!-- Неделя -->
         <div class="card" onclick="sendData('rune_week')">
-            <img src="rune_week.jpg" alt="Week" class="card-image">
+            <img src="rune_week.jpg" alt="Неделя" class="card-image" onerror="this.style.display='none'">
             <div class="card-content">
                 <div class="card-title">🔮 Руна Недели</div>
-                <div class="card-desc">Подсказка на 7 дней</div>
+                <div class="card-desc">Прогноз на 7 дней</div>
             </div>
         </div>
 
-        <!-- Канал с формулами -->
+        <!-- Канал -->
         <div class="card full-width" style="background: #2c2c2e; color: var(--text-color);" onclick="sendData('promo_channel')">
-            <img src="formulas.jpg" alt="Channel" class="card-image">
+            <img src="formulas.jpg" alt="Канал" class="card-image" onerror="this.style.display='none'">
             <div class="card-content">
                 <div class="card-title">🧬 Канал с формулами</div>
-                <div class="card-desc">Готовые решения на все случаи жизни</div>
+                <div class="card-desc">Готовые решения</div>
             </div>
         </div>
     </div>
@@ -171,15 +183,20 @@
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Растягиваем на весь экран
+        tg.expand();
 
-        // Функция отправки данных боту
         function sendData(data) {
-            tg.sendData(data); 
+            // Вибрация при нажатии (приятный отклик)
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            tg.sendData(data);
         }
 
-        // Функция открытия внешней ссылки
         function openLink(url) {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
             tg.openLink(url);
         }
     </script>
