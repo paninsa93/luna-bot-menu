@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Меню Магии</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #1c1c1e);
+            --text-color: var(--tg-theme-text-color, #ffffff);
+            --card-bg: var(--tg-theme-secondary-bg-color, #2c2c2e);
+            --hint-color: var(--tg-theme-hint-color, #8e8e93);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            user-select: none; /* Убираем выделение текста */
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Две колонки */
+            gap: 10px;
+            padding-bottom: 20px;
+        }
+
+        /* Карточка на всю ширину (для Подарка) */
+        .card.full-width {
+            grid-column: span 2;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            color: #000;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100px; /* Высота картинки */
+            object-fit: cover;
+        }
+
+        /* Увеличенная картинка для главной карточки */
+        .card.full-width .card-image {
+            height: 140px;
+        }
+
+        .card-content {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: var(--hint-color);
+            line-height: 1.3;
+        }
+
+        /* Цвет текста описания для цветной карточки */
+        .card.full-width .card-desc {
+            color: #444;
+        }
+
+        h2 {
+            margin: 10px 0 15px 5px;
+            font-size: 20px;
+        }
+
+        /* Секция Контакты (внизу) */
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>✨ Магическое меню</h2>
+
+    <div class="container">
+        <!-- БОЛЬШАЯ КНОПКА ПОДАРКА -->
+        <div class="card full-width" onclick="sendData('gift_start')">
+            <!-- Замените gift.jpg на название вашего файла -->
+            <img src="gift.jpg" alt="Gift" class="card-image"> 
+            <div class="card-content">
+                <div class="card-title">🎁 ЗАБРАТЬ ПОДАРОК 2026</div>
+                <div class="card-desc">Эксклюзивные рунические формулы на год</div>
+            </div>
+        </div>
+
+        <!-- Руна 2026 -->
+        <div class="card" onclick="sendData('rune_year_2026')">
+            <img src="rune_year.jpg" alt="2026" class="card-image">
+            <div class="card-content">
+                <div class="card-title">🐍 Руна 2026</div>
+                <div class="card-desc">Финансовый прогноз на год</div>
+            </div>
+        </div>
+
+        <!-- Денежный календарь -->
+        <div class="card" onclick="sendData('money_calendar')">
+            <img src="calendar.jpg" alt="Calendar" class="card-image">
+            <div class="card-content">
+                <div class="card-title">🌙 Календарь</div>
+                <div class="card-desc">Денежный лунный календарь</div>
+            </div>
+        </div>
+
+        <!-- Руна Месяца -->
+        <div class="card" onclick="sendData('rune_month')">
+            <img src="rune_month.jpg" alt="Month" class="card-image">
+            <div class="card-content">
+                <div class="card-title">📅 Руна Месяца</div>
+                <div class="card-desc">Энергия текущего периода</div>
+            </div>
+        </div>
+
+        <!-- Руна Недели -->
+        <div class="card" onclick="sendData('rune_week')">
+            <img src="rune_week.jpg" alt="Week" class="card-image">
+            <div class="card-content">
+                <div class="card-title">🔮 Руна Недели</div>
+                <div class="card-desc">Подсказка на 7 дней</div>
+            </div>
+        </div>
+
+        <!-- Канал с формулами -->
+        <div class="card full-width" style="background: #2c2c2e; color: var(--text-color);" onclick="sendData('promo_channel')">
+            <img src="formulas.jpg" alt="Channel" class="card-image">
+            <div class="card-content">
+                <div class="card-title">🧬 Канал с формулами</div>
+                <div class="card-desc">Готовые решения на все случаи жизни</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка записи -->
+    <div class="footer-link" onclick="openLink('https://t.me/lera_luna')">
+        ✍️ Запись на консультацию
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Растягиваем на весь экран
+
+        // Функция отправки данных боту
+        function sendData(data) {
+            tg.sendData(data); 
+        }
+
+        // Функция открытия внешней ссылки
+        function openLink(url) {
+            tg.openLink(url);
+        }
+    </script>
+</body>
+</html>
