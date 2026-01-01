@@ -182,23 +182,40 @@
     </div>
 
     <script>
+        // Инициализация Telegram WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand();
+        tg.expand(); // Растянуть на весь экран
 
         function sendData(data) {
-            // Вибрация при нажатии (приятный отклик)
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+            // 1. Безопасная попытка вибрации (чтобы не ломалось на ПК)
+            try {
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
+            } catch (err) {
+                console.log("Вибрация не поддерживается, едем дальше");
             }
-            tg.sendData(data);
+
+            // 2. Отправка данных
+            try {
+                // Эта команда отправляет данные боту И закрывает окно
+                tg.sendData(data); 
+            } catch (err) {
+                // Если вдруг произошла ошибка - покажем её
+                alert("Ошибка отправки данных: " + err);
+            }
         }
 
         function openLink(url) {
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+            // Безопасное открытие ссылки
+            try {
+                tg.openLink(url);
+            } catch (err) {
+                // Если не сработало через WebApp, пробуем обычно
+                window.location.href = url;
             }
-            tg.openLink(url);
         }
     </script>
 </body>
 </html>
+
